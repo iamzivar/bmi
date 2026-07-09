@@ -1,4 +1,3 @@
-# ایمپورت کتابخانه‌های مورد نیاز
 from flask import Flask, render_template, request, send_from_directory, send_file
 import os
 from werkzeug.utils import secure_filename
@@ -13,12 +12,11 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from PIL import Image
 
-# راه‌اندازی Flask
-app = Flask(__name__, static_url_path='/static', static_folder='static', template_folder='.')
+# ✅ اصلاح شده: __name__ و template_folder='templates'
+app = Flask(__name__, static_url_path='/static', static_folder='static', template_folder='templates')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['SECRET_KEY'] = 'supersecretkey'
 
-# ثبت فونت فارسی
 font_path = 'static/fonts/Vazirmatn-Medium.ttf'
 if os.path.exists(font_path):
     pdfmetrics.registerFont(TTFont('Vazir', font_path))
@@ -26,7 +24,6 @@ if os.path.exists(font_path):
 else:
     FONT_NAME = 'Helvetica'
 
-# ساخت پوشه uploads
 if not os.path.exists('uploads'):
     os.makedirs('uploads')
 
@@ -1351,7 +1348,6 @@ def calculate_normal_weight_range(height_cm):
     max_weight = round(24.9 * (height_m ** 2), 1)
     return min_weight, max_weight
 
-# Route اصلی
 @app.route('/', methods=['GET', 'POST'])
 def index():
     lang = request.args.get('lang', 'fa')
@@ -1397,7 +1393,6 @@ def index():
     
     return render_template('index.html', lang=lang, tr=tr)
 
-# Route دانلود PDF با ReportLab
 @app.route('/download/pdf')
 def download_pdf():
     try:
@@ -1470,7 +1465,6 @@ def download_pdf():
     except Exception as e:
         return f"Error: {str(e)}", 500
 
-# Route دانلود Image با matplotlib
 @app.route('/download/image')
 def download_image():
     try:
