@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 # راه‌اندازی Flask
-app = Flask(__name__, static_url_path='/static', static_folder='static', template_folder='.')app.config['UPLOAD_FOLDER'] = 'uploads'
+app = Flask(__name__, static_url_path='/static', static_folder='static', template_folder='.')
+app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['SECRET_KEY'] = 'supersecretkey'
 
 # ثبت فونت فارسی
