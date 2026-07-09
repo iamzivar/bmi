@@ -1,236 +1,29 @@
 <!DOCTYPE html>
-<html lang="{{ lang }}">
+<html lang="fa" dir="rtl">
 <head>
-    <!-- تنظیمات اصلی صفحه -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ tr['result_title'] }} {{ full_name }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>تست BMI</title>
+    <style>
+        body {
+            font-family: Tahoma, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: #f0f0f0;
+        }
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        h1 { color: #333; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- هدر صفحه نتایج -->
-        <div class="result-header">
-            <img src="/{{ avatar }}" alt="Avatar" class="user-avatar">
-            <h1>{{ tr['result_title'] }} {{ full_name }}</h1>
-        </div>
-
-        <!-- کارت اطلاعات کاربر -->
-        <div class="user-info-card">
-            <div>
-                <strong>{{ tr['age'] }}:</strong> {{ age }} {{ 'سال' if lang == 'fa' else 'Years' }}
-            </div>
-            <div>
-                <strong>{{ tr['height'] }}:</strong> {{ height }} cm
-            </div>
-            <div>
-                <strong>{{ tr['weight'] }}:</strong> {{ weight }} kg
-            </div>
-            <div>
-                <strong>{{ tr['condition'] }}:</strong> {{ tr.get('condition_' + condition, tr['condition_none']) }}
-            </div>
-        </div>
-
-        <!-- کارت وضعیت BMI -->
-        <div class="status-card">
-            <img src="{{ url_for('static', filename='images/' + status_image) }}" alt="Status" class="status-icon">
-            <div>
-                <h3>{{ tr['bmi'] }}: {{ bmi }}</h3>
-                <div class="status-indicator {{ status.split('_')[1] }}">{{ tr['status'] }}: {{ tr[status] }}</div>
-            </div>
-        </div>
-
-        <!-- بخش نمودارها -->
-        <div class="charts-section">
-            <h2>{{ 'نمودار وضعیت BMI و وزن' if lang == 'fa' else 'BMI & Weight Status Chart' }}</h2>
-            <div style="max-width: 600px; margin: 0 auto;">
-                <canvas id="bmiChart"></canvas>
-            </div>
-            <div style="max-width: 600px; margin: 30px auto 0 auto;">
-                <canvas id="weightChart"></canvas>
-            </div>
-        </div>
-
-        <!-- کتابخانه Chart.js -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            // متغیرهای مورد نیاز برای نمودارها
-            const bmi = {{ bmi|tojson }};
-            const minBmi = 18.5;
-            const maxBmi = 24.9;
-            const weight = {{ weight|tojson }};
-            const minWeight = {{ min_weight|tojson }};
-            const maxWeight = {{ max_weight|tojson }};
-
-            // نمودار BMI
-            const bmiCtx = document.getElementById('bmiChart').getContext('2d');
-            new Chart(bmiCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['کمبود وزن', 'نرمال', 'اضافه وزن', 'چاقی', 'شما'],
-                    datasets: [
-                        {
-                            label: 'BMI',
-                            data: [16, 21, 27, 32, bmi],
-                            backgroundColor: [
-                                '#b3c6e7', // کمبود وزن
-                                '#a8e6a3', // نرمال
-                                '#ffe082', // اضافه وزن
-                                '#ffb3b3', // چاقی
-                                '#1976d2'  // کاربر
-                            ],
-                            borderColor: '#292b2c',
-                            borderWidth: 2,
-                            barThickness: 40
-                        }
-                    ]
-                },
-                options: {
-                    plugins: {
-                        legend: { display: false },
-                        title: {
-                            display: true,
-                            text: 'BMI Chart',
-                            font: { family: 'Vazirmatn', size: 20 }
-                        },
-                        tooltip: {
-                            enabled: true,
-                            titleFont: { family: 'Vazirmatn', size: 16 },
-                            bodyFont: { family: 'Vazirmatn', size: 16 }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: { font: { family: 'Vazirmatn', size: 16 }, color: '#292b2c' }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            suggestedMax: 40,
-                            ticks: { font: { family: 'Vazirmatn', size: 16 }, color: '#292b2c' }
-                        }
-                    }
-                }
-            });
-
-            // نمودار وزن
-            const weightCtx = document.getElementById('weightChart').getContext('2d');
-            new Chart(weightCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['حداقل وزن نرمال', 'وزن شما', 'حداکثر وزن نرمال'],
-                    datasets: [
-                        {
-                            label: 'وزن (kg)',
-                            data: [minWeight, weight, maxWeight],
-                            backgroundColor: [
-                                '#a8e6a3', // حداقل وزن نرمال
-                                '#1976d2', // وزن کاربر
-                                '#a8e6a3'  // حداکثر وزن نرمال
-                            ],
-                            borderColor: '#292b2c',
-                            borderWidth: 2,
-                            barThickness: 40
-                        }
-                    ]
-                },
-                options: {
-                    plugins: {
-                        legend: { display: false },
-                        title: {
-                            display: true,
-                            text: 'Weight Chart',
-                            font: { family: 'Vazirmatn', size: 20 }
-                        },
-                        tooltip: {
-                            enabled: true,
-                            titleFont: { family: 'Vazirmatn', size: 16 },
-                            bodyFont: { family: 'Vazirmatn', size: 16 }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: { font: { family: 'Vazirmatn', size: 16 }, color: '#292b2c' }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: { font: { family: 'Vazirmatn', size: 16 }, color: '#292b2c' }
-                        }
-                    }
-                }
-            });
-        </script>
-
-        <!-- بخش برنامه عملیاتی -->
-        <div class="action-plan">
-            <h2>{{ 'برنامه عملیاتی جامع' if lang == 'fa' else 'Comprehensive Action Plan' }}</h2>
-
-            <!-- توصیه‌های تخصصی -->
-            <div class="plan">
-                <h3>📋 {{ 'توصیه‌های تخصصی' if lang == 'fa' else 'Professional Advice' }}</h3>
-                <p class="multiline">
-                    {% if status == 'status_under' %}{{ tr.get('advice_under_' + condition, tr['advice_under_none']) }}
-                    {% elif status == 'status_normal' %}{{ tr.get('advice_normal_' + condition, tr['advice_normal_none']) }}
-                    {% elif status == 'status_over' %}{{ tr.get('advice_over_' + condition, tr['advice_over_none']) }}
-                    {% else %}{{ tr.get('advice_obese_' + condition, tr['advice_obese_none']) }}
-                    {% endif %}
-                </p>
-            </div>
-
-            <!-- برنامه غذایی -->
-            <div class="plan">
-                <h3>🍽️ {{ 'برنامه غذایی ۷ روزه' if lang == 'fa' else '7-Day Meal Plan' }}</h3>
-                <p class="multiline">
-                    {% if status == 'status_under' %}{{ tr.get('plan_under_' + condition, tr['plan_under_none']) }}
-                    {% elif status == 'status_normal' %}{{ tr.get('plan_normal_' + condition, tr['plan_normal_none']) }}
-                    {% elif status == 'status_over' %}{{ tr.get('plan_over_' + condition, tr['plan_over_none']) }}
-                    {% else %}{{ tr.get('plan_obese_' + condition, tr['plan_obese_none']) }}
-                    {% endif %}
-                </p>
-            </div>
-
-            <!-- برنامه ورزشی -->
-            <div class="plan">
-                <h3>🏋️ {{ 'روتین ورزشی' if lang == 'fa' else 'Exercise Routine' }}</h3>
-                <p class="multiline">
-                    {% if status == 'status_under' %}{{ tr.get('exercise_under_' + condition, tr['exercise_under_none']) }}
-                    {% elif status == 'status_normal' %}{{ tr.get('exercise_normal_' + condition, tr['exercise_normal_none']) }}
-                    {% elif status == 'status_over' %}{{ tr.get('exercise_over_' + condition, tr['exercise_over_none']) }}
-                    {% else %}{{ tr.get('exercise_obese_' + condition, tr['exercise_obese_none']) }}
-                    {% endif %}
-                </p>
-            </div>
-
-            <!-- نکات طلایی -->
-            <div class="plan">
-                <h3>💡 {{ 'نکات طلایی' if lang == 'fa' else 'Golden Tips' }}</h3>
-                <p class="multiline">{{ tr['extra_tips'] }}</p>
-            </div>
-
-            <!-- مکمل‌ها -->
-            <div class="plan">
-                <h3>💊 {{ 'مکمل‌ها' if lang == 'fa' else 'Supplements' }}</h3>
-                <p class="multiline">
-                    {{ tr.get('supplements_' + status + '_' + condition, tr.get('supplements_default', '')) }}
-                </p>
-            </div>
-
-            <!-- هشدارها -->
-            <div class="plan">
-                <h3>⚠️ {{ 'هشدارها' if lang == 'fa' else 'Warnings' }}</h3>
-                <p class="multiline">
-                    {{ tr.get('warnings_' + status + '_' + condition, tr.get('warnings_default', '')) }}
-                </p>
-            </div>
-        </div>
-
-        <div class="download-buttons">
-            <a href="{{ url_for('download_pdf', lang=lang, full_name=full_name, bmi=bmi, status=status, age=age, height=height, weight=weight, condition=condition) }}" class="download-btn">
-                📥 {{ 'دانلود PDF' if lang == 'fa' else 'Download PDF' }}
-            </a>
-            <a href="{{ url_for('download_image', lang=lang, full_name=full_name, bmi=bmi, status=status, age=age, height=height, weight=weight, condition=condition) }}" class="download-btn">
-                📸 {{ 'ذخیره عکس' if lang == 'fa' else 'Save as Image' }}
-            </a>
-        </div>
+    <div class="box">
+        <h1>✅ سایت کار می‌کنه!</h1>
+        <p>اگر این متن رو می‌بینی، یعنی سرور سالمه.</p>
+        <p>حالا باید فایل‌های اصلی رو برگردونیم.</p>
     </div>
 </body>
 </html>
