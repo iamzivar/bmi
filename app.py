@@ -1405,7 +1405,7 @@ def download_pdf():
         height = request.args.get('height', '0')
         weight = request.args.get('weight', '0')
         condition = request.args.get('condition', '')
-
+        
         tr = translations.get(lang, translations['fa'])
         
         try:
@@ -1416,10 +1416,10 @@ def download_pdf():
             bmi_val = 0
             height_val = 0
             weight_val = 0
-
+        
         status_text = tr.get(status, status)
         condition_text = tr.get(f'condition_{condition}', condition)
-
+        
         buffer = io.BytesIO()
         c = canvas.Canvas(buffer, pagesize=A4)
         width, height_page = A4
@@ -1435,31 +1435,25 @@ def download_pdf():
         c.setFont(FONT_NAME, 14)
         y_position = height_page - 4*cm
         
-info_items = [
-    (tr.get('result_title', 'Result for'), full_name),
-    (tr.get('age', 'Age'), f"{age} سال" if lang == 'fa' else f"{age} years"),
-    (tr.get('height', 'Height'), f"{height_val} cm"),
-    (tr.get('weight', 'Weight'), f"{weight_val} kg"),
-    (tr.get('bmi', 'BMI'), str(bmi_val)),
-    (tr.get('status', 'Status'), status_text),
-    (tr.get('condition', 'Condition'), condition_text),
-]
-
-for label, value in info_items:
-    if lang == 'fa':
-        label = reshape_for_presentation(label)
-        value = reshape_for_presentation(str(value))
-    c.drawString(3*cm, y_position, f"{label}:")
-    c.drawString(10*cm, y_position, value)
-    y_position -= 1.2*cm
-
-min_w, max_w = calculate_normal_weight_range(height_val)
-range_text = f"{min_w} - {max_w} kg"
-if lang == 'fa':
-    range_text = reshape_for_presentation(range_text)
-c.drawString(3*cm, y_position, "Normal Weight Range:")
-c.drawString(10*cm, y_position, range_text)
-
+        info_items = [
+            (tr.get('result_title', 'Result for'), full_name),
+            (tr.get('age', 'Age'), f"{age} سال" if lang == 'fa' else f"{age} years"),
+            (tr.get('height', 'Height'), f"{height_val} cm"),
+            (tr.get('weight', 'Weight'), f"{weight_val} kg"),
+            (tr.get('bmi', 'BMI'), str(bmi_val)),
+            (tr.get('status', 'Status'), status_text),
+            (tr.get('condition', 'Condition'), condition_text),
+        ]
+        
+        for label, value in info_items:
+            c.drawString(3*cm, y_position, f"{label}:")
+            c.drawString(10*cm, y_position, str(value))
+            y_position -= 1.2*cm
+        
+        min_w, max_w = calculate_normal_weight_range(height_val)
+        c.drawString(3*cm, y_position, "Normal Weight Range:")
+        c.drawString(10*cm, y_position, f"{min_w} - {max_w} kg")
+        
         c.save()
         buffer.seek(0)
         
@@ -1471,7 +1465,7 @@ c.drawString(10*cm, y_position, range_text)
         )
     except Exception as e:
         return f"Error: {str(e)}", 500
-
+        
 @app.route('/download/image')
 def download_image():
     try:
@@ -1483,16 +1477,16 @@ def download_image():
         height = request.args.get('height', '0')
         weight = request.args.get('weight', '0')
         condition = request.args.get('condition', '')
-
+        
         tr = translations.get(lang, translations['fa'])
         
         try:
             bmi_val = float(bmi)
         except:
             bmi_val = 0
-
+        
         status_text = tr.get(status, status)
-
+        
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.axis('off')
         
@@ -1503,13 +1497,7 @@ def download_image():
                 fontsize=24, fontweight='bold', ha='center',
                 bbox=dict(boxstyle='round', facecolor='#ADB2D4', alpha=0.8))
         
-if lang == 'fa':
-    full_name = reshape_for_presentation(full_name)
-    status_text = reshape_for_presentation(status_text)
-    condition = reshape_for_presentation(condition)
-    title = reshape_for_presentation(title)
-
-info_text = f"""
+        info_text = f"""
 Name: {full_name}
 Age: {age}
 Height: {height} cm
