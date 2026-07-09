@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- تنظیمات اصلی صفحه -->
+    <meta charset="UTF-8">
+    <title>Capture Result</title>
+    <!-- کتابخانه html2canvas برای تبدیل HTML به تصویر -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- محتوای HTML که باید به تصویر تبدیل شود -->
+    <div id="content">
+        {{ html_content|safe }}
+    </div>
+    <script>
+        // اجرای کد پس از بارگذاری کامل صفحه
+        window.onload = function() {
+            // تبدیل محتوای HTML به canvas
+            html2canvas(document.getElementById('content')).then(function(canvas) {
+                // تبدیل canvas به blob
+                canvas.toBlob(function(blob) {
+                    // ایجاد لینک دانلود خودکار
+                    const link = document.createElement('a');
+                    link.download = 'BMI_Result_{{ full_name }}.png';
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                });
+            });
+        };
+    </script>
+</body>
+</html> 
