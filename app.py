@@ -11,6 +11,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from PIL import Image
+from arabic_reshaper import reshape_for_presentation
 
 # ✅ اصلاح شده: __name__ و template_folder='templates'
 app = Flask(__name__, static_url_path='/static', static_folder='static', template_folder='templates')
@@ -1434,24 +1435,30 @@ def download_pdf():
         c.setFont(FONT_NAME, 14)
         y_position = height_page - 4*cm
         
-        info_items = [
-            (tr.get('result_title', 'Result for'), full_name),
-            (tr.get('age', 'Age'), f"{age} سال" if lang == 'fa' else f"{age} years"),
-            (tr.get('height', 'Height'), f"{height_val} cm"),
-            (tr.get('weight', 'Weight'), f"{weight_val} kg"),
-            (tr.get('bmi', 'BMI'), str(bmi_val)),
-            (tr.get('status', 'Status'), status_text),
-            (tr.get('condition', 'Condition'), condition_text),
-        ]
+info_items = [
+    (tr.get('result_title', 'Result for'), full_name),
+    (tr.get('age', 'Age'), f"{age} سال" if lang == 'fa' else f"{age} years"),
+    (tr.get('height', 'Height'), f"{height_val} cm"),
+    (tr.get('weight', 'Weight'), f"{weight_val} kg"),
+    (tr.get('bmi', 'BMI'), str(bmi_val)),
+    (tr.get('status', 'Status'), status_text),
+    (tr.get('condition', 'Condition'), condition_text),
+]
 
-        for label, value in info_items:
-            c.drawString(3*cm, y_position, f"{label}:")
-            c.drawString(10*cm, y_position, str(value))
-            y_position -= 1.2*cm
+for label, value in info_items:
+    if lang == 'fa':
+        label = reshape_for_presentation(label)
+        value = reshape_for_presentation(str(value))
+    c.drawString(3*cm, y_position, f"{label}:")
+    c.drawString(10*cm, y_position, value)
+    y_position -= 1.2*cm
 
-        min_w, max_w = calculate_normal_weight_range(height_val)
-        c.drawString(3*cm, y_position, "Normal Weight Range:")
-        c.drawString(10*cm, y_position, f"{min_w} - {max_w} kg")
+min_w, max_w = calculate_normal_weight_range(height_val)
+range_text = f"{min_w} - {max_w} kg"
+if lang == 'fa':
+    range_text = reshape_for_presentation(range_text)
+c.drawString(3*cm, y_position, "Normal Weight Range:")
+c.drawString(10*cm, y_position, range_text)
 
         c.save()
         buffer.seek(0)
@@ -1496,7 +1503,13 @@ def download_image():
                 fontsize=24, fontweight='bold', ha='center',
                 bbox=dict(boxstyle='round', facecolor='#ADB2D4', alpha=0.8))
         
-        info_text = f"""
+if lang == 'fa':
+    full_name = reshape_for_presentation(full_name)
+    status_text = reshape_for_presentation(status_text)
+    condition = reshape_for_presentation(condition)
+    title = reshape_for_presentation(title)
+
+info_text = f"""
 Name: {full_name}
 Age: {age}
 Height: {height} cm
@@ -1504,6 +1517,7 @@ Weight: {weight} kg
 BMI: {bmi_val}
 Status: {status_text}
 Condition: {condition}
+"""
         """
         
         ax.text(0.1, 0.7, info_text, transform=ax.transAxes,
