@@ -1,29 +1,129 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="{{ lang }}" dir="{% if lang == 'fa' %}rtl{% else %}ltr{% endif %}">
 <head>
+    <!-- تنظیمات اصلی صفحه -->
     <meta charset="UTF-8">
-    <title>تست BMI</title>
-    <style>
-        body {
-            font-family: Tahoma, sans-serif;
-            text-align: center;
-            padding: 50px;
-            background: #f0f0f0;
-        }
-        .box {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-        h1 { color: #333; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr['title'] }}</title>
+    <!-- لینک‌های CSS و فونت -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
 </head>
 <body>
-    <div class="box">
-        <h1>✅ سایت کار می‌کنه!</h1>
-        <p>اگر این متن رو می‌بینی، یعنی سرور سالمه.</p>
-        <p>حالا باید فایل‌های اصلی رو برگردونیم.</p>
+    <div class="container">
+        <h1>{{ tr['title'] }}</h1>
+        
+        <!-- تغییر زبان -->
+        <div class="language-switcher">
+            <img src="/static/images/flag_fa.png" class="lang-flag" data-lang="fa" width="30">
+            <img src="/static/images/flag_en.png" class="lang-flag" data-lang="en" width="30">
+        </div>
+
+        <!-- فرم ورود اطلاعات -->
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="lang" id="selected-lang" value="{{ lang }}">
+
+            <!-- بخش انتخاب جنسیت و آپلود عکس -->
+            <div class="gender-section">
+                <div class="gender-options">
+                    <label class="gender-item">
+                        <input type="radio" name="gender" value="male" hidden>
+                        <img src="/static/images/male.png" class="gender-icon">
+                        <span class="gender-text">{{ 'مرد' if lang == 'fa' else 'Male' }}</span>
+                    </label>
+                    <label class="gender-item">
+                        <input type="radio" name="gender" value="none" checked hidden>
+                        <img src="/static/images/none.png" class="gender-icon">
+                        <span class="gender-text">{{ 'هیچکدام' if lang == 'fa' else 'None' }}</span>
+                    </label>
+                    <label class="gender-item">
+                        <input type="radio" name="gender" value="female" hidden>
+                        <img src="/static/images/female.png" class="gender-icon">
+                        <span class="gender-text">{{ 'زن' if lang == 'fa' else 'Female' }}</span>
+                    </label>
+                </div>
+                
+                <!-- دکمه آپلود عکس -->
+                <div class="avatar-upload">
+                    <label class="upload-button">
+                        <input type="file" name="avatar" accept="image/*" hidden>
+                        {{ 'آپلود عکس' if lang == 'fa' else 'Upload Photo' }}
+                    </label>
+                </div>
+            </div>
+
+            <!-- فیلدهای ورودی اطلاعات -->
+            <div class="input-group">
+                <label>{{ 'نام کامل' if lang == 'fa' else 'Full Name' }}:</label>
+                <input type="text" name="full_name" required>
+            </div>
+
+            <div class="input-group">
+                <label>{{ tr['age'] }}:</label>
+                <input type="number" name="age" min="1" required>
+            </div>
+
+            <!-- ورودی قد با انتخاب واحد -->
+            <div class="input-group">
+                <label>{{ tr['height'] }}:</label>
+                <div class="unit-input">
+                    <input type="number" name="height" step="0.1" required>
+                    <select name="height_unit">
+                        <option value="cm">cm</option>
+                        <option value="inch">inch</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- ورودی وزن با انتخاب واحد -->
+            <div class="input-group">
+                <label>{{ tr['weight'] }}:</label>
+                <div class="unit-input">
+                    <input type="number" name="weight" step="0.1" required>
+                    <select name="weight_unit">
+                        <option value="kg">kg</option>
+                        <option value="lb">lb</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- انتخاب بیماری‌های زمینه‌ای -->
+            <div class="input-group">
+                <label>{{ 'بیماری‌های زمینه‌ای' if lang == 'fa' else 'Medical Conditions' }}:</label>
+                <select name="condition" required>
+                    <option value="none">{{ 'بدون بیماری' if lang == 'fa' else 'No Condition' }}</option>
+                    <option value="diabetes">{{ 'دیابت' if lang == 'fa' else 'Diabetes' }}</option>
+                    <option value="hypertension">{{ 'فشار خون بالا' if lang == 'fa' else 'Hypertension' }}</option>
+                    <option value="heart_disease">{{ 'بیماری قلبی' if lang == 'fa' else 'Heart Disease' }}</option>
+                    <option value="asthma">{{ 'آسم' if lang == 'fa' else 'Asthma' }}</option>
+                    <option value="arthritis">{{ 'آرتریت' if lang == 'fa' else 'Arthritis' }}</option>
+                    <option value="kidney_disease">{{ 'بیماری کلیوی' if lang == 'fa' else 'Kidney Disease' }}</option>
+                    <option value="thyroid_disease">{{ 'بیماری تیروئید' if lang == 'fa' else 'Thyroid Disease' }}</option>
+                </select>
+            </div>
+
+            <!-- دکمه ارسال فرم -->
+            <button type="submit" class="submit-btn">{{ tr['submit'] }}</button>
+        </form>
     </div>
+    
+    <!-- اسکریپت‌های جاوااسکریپت -->
+    <script>
+        // انتخاب جنسیت
+        document.querySelectorAll('.gender-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.gender-item').forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+            });
+        });
+
+        // تغییر زبان
+        document.querySelectorAll('.lang-flag').forEach(flag => {
+            flag.addEventListener('click', () => {
+                const lang = flag.dataset.lang;
+                window.location.href = `/?lang=${lang}`;
+            });
+        });
+    </script>
 </body>
 </html>
