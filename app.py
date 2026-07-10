@@ -11,9 +11,8 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from PIL import Image
-from arabic_reshaper import reshape_for_presentation
+from arabic_reshaper import reshape
 
-# ✅ اصلاح شده: __name__ و template_folder='templates'
 app = Flask(__name__, static_url_path='/static', static_folder='static', template_folder='templates')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['SECRET_KEY'] = 'supersecretkey'
@@ -32,7 +31,6 @@ if not os.path.exists('uploads'):
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-# دیکشنری کامل ترجمه‌ها
 translations = {
     'fa': {
         'title': 'محاسبه BMI',
@@ -104,7 +102,7 @@ translations = {
         'advice_over_diabetes': '''
             توصیه‌های تخصصی:
             - کاهش وزن تدریجی با رژیم کم‌قند
-            - ورزش‌های هوازی سبک ( جلسه در هفته)
+            - ورزش‌های هوازی سبک (۵ جلسه در هفته)
             - پایش قند خون روزانه
             ''',
         'advice_obese_diabetes': '''
@@ -261,26 +259,26 @@ translations = {
             برنامه ۷ روزه:
             🥑 صبحانه: املت اسفناج + آووکادو
             🥜 میان‌وعده: مخلوط مغزیجات
-             ناهار: مرغ گریل شده + برنج قهوه‌ای
+            🍗 ناهار: مرغ گریل شده + برنج قهوه‌ای
             🥛 شام: سوپ عدس + نان سبوس‌دار
             ''',
         'plan_normal_none': '''
             برنامه ۷ روزه:
             🥚 صبحانه: نان تست + املت سبزیجات
-             میان‌وعده: میوه فصل
+            🍎 میان‌وعده: میوه فصل
             🥩 ناهار: استیک گوشت + سیب زمینی آبپز
             🥦 شام: سالاد پروتئینی + کینوا
             ''',
         'plan_over_none': '''
-            برنامه  روزه:
+            برنامه ۷ روزه:
             🥗 صبحانه: اسموتی سبز + جو دوسر
             🥕 میان‌وعده: هویج و حمص
             🍤 ناهار: میگو گریل شده + سبزیجات بخارپز
-             شام: سوپ مرغ و جو
+            🥬 شام: سوپ مرغ و جو
             ''',
         'plan_obese_none': '''
             برنامه ۷ روزه:
-             صبحانه: سفیده تخم مرغ + قارچ
+            🍳 صبحانه: سفیده تخم مرغ + قارچ
             🥑 میان‌وعده: آووکادو با گردو
             🥩 ناهار: سینه بوقلمون + کدو اسپاگتی
             🥬 شام: ماهی سفید + بروکلی بخارپز
@@ -301,7 +299,7 @@ translations = {
             ''',
         'plan_over_diabetes': '''
             برنامه ۷ روزه:
-             صبحانه: تخم مرغ آبپز + سبزیجات
+            🥚 صبحانه: تخم مرغ آبپز + سبزیجات
             🥕 میان‌وعده: هویج
             🥩 ناهار: بوقلمون گریل شده + سالاد
             🥬 شام: ماهی سفید + سبزیجات
@@ -311,7 +309,7 @@ translations = {
             🍳 صبحانه: سفیده تخم مرغ + اسفناج
             🥑 میان‌وعده: آووکادو
             🍗 ناهار: مرغ بخارپز + کدو
-             شام: ماهی + سبزیجات بخارپز
+            🥬 شام: ماهی + سبزیجات بخارپز
             ''',
         'plan_under_hypertension': '''
             برنامه ۷ روزه:
@@ -338,12 +336,12 @@ translations = {
             برنامه ۷ روزه:
             🍳 صبحانه: سفیده تخم مرغ + سبزیجات
             🥑 میان‌وعده: آووکادو
-             ناهار: بوقلمون گریل شده + کدو
+            🍗 ناهار: بوقلمون گریل شده + کدو
             🥬 شام: ماهی سفید + سبزیجات بخارپز
             ''',
         'plan_under_heart_disease': '''
             برنامه ۷ روزه:
-             صبحانه: ماست کم‌چرب + توت‌ها
+            🥗 صبحانه: ماست کم‌چرب + توت‌ها
             🍎 میان‌وعده: سیب
             🍗 ناهار: مرغ گریل شده + سبزیجات
             🥬 شام: ماهی سفید + سالاد سبز
@@ -352,7 +350,7 @@ translations = {
             برنامه ۷ روزه:
             🥚 صبحانه: تخم مرغ آبپز + سبزیجات
             🥜 میان‌وعده: بادام خام
-             ناهار: گوشت بدون چربی + کینوا
+            🥩 ناهار: گوشت بدون چربی + کینوا
             🥦 شام: سالاد مرغ + سبزیجات
             ''',
         'plan_over_heart_disease': '''
@@ -364,13 +362,13 @@ translations = {
             ''',
         'plan_obese_heart_disease': '''
             برنامه ۷ روزه:
-             صبحانه: سفیده تخم مرغ + سبزیجات
+            🍳 صبحانه: سفیده تخم مرغ + سبزیجات
             🥑 میان‌وعده: آووکادو
             🍗 ناهار: بوقلمون گریل شده + کدو
             🥬 شام: ماهی سفید + سبزیجات بخارپز
             ''',
         'plan_under_asthma': '''
-            برنامه  روزه:
+            برنامه ۷ روزه:
             🥗 صبحانه: ماست کم‌چرب + توت‌ها
             🍎 میان‌وعده: سیب
             🍗 ناهار: مرغ گریل شده + سبزیجات
@@ -384,14 +382,14 @@ translations = {
             🥦 شام: سالاد مرغ + سبزیجات
             ''',
         'plan_over_asthma': '''
-            برنامه  روزه:
+            برنامه ۷ روزه:
             🥗 صبحانه: اسموتی سبز + جو دوسر
             🥕 میان‌وعده: هویج
             🍤 ناهار: میگو بخارپز + سبزیجات
             🥬 شام: سوپ سبزیجات کم‌چرب
             ''',
         'plan_obese_asthma': '''
-            برنامه  روزه:
+            برنامه ۷ روزه:
             🍳 صبحانه: سفیده تخم مرغ + سبزیجات
             🥑 میان‌وعده: آووکادو
             🍗 ناهار: بوقلمون گریل شده + کدو
@@ -400,20 +398,20 @@ translations = {
         'plan_under_arthritis': '''
             برنامه ۷ روزه:
             🥗 صبحانه: ماست کم‌چرب + توت‌ها
-             میان‌وعده: سیب
+            🍎 میان‌وعده: سیب
             🍗 ناهار: مرغ گریل شده + سبزیجات
             🥬 شام: ماهی سفید + سالاد سبز
             ''',
         'plan_normal_arthritis': '''
             برنامه ۷ روزه:
             🥚 صبحانه: تخم مرغ آبپز + سبزیجات
-             میان‌وعده: بادام خام
+            🥜 میان‌وعده: بادام خام
             🥩 ناهار: گوشت بدون چربی + کینوا
             🥦 شام: سالاد مرغ + سبزیجات
             ''',
         'plan_over_arthritis': '''
             برنامه ۷ روزه:
-             صبحانه: اسموتی سبز + جو دوسر
+            🥗 صبحانه: اسموتی سبز + جو دوسر
             🥕 میان‌وعده: هویج
             🍤 ناهار: میگو بخارپز + سبزیجات
             🥬 شام: سوپ سبزیجات کم‌چرب
@@ -434,7 +432,7 @@ translations = {
             ''',
         'plan_normal_kidney_disease': '''
             برنامه ۷ روزه:
-             صبحانه: تخم مرغ آبپز + سبزیجات
+            🥚 صبحانه: تخم مرغ آبپز + سبزیجات
             🥜 میان‌وعده: بادام خام
             🥩 ناهار: گوشت بدون چربی + کینوا
             🥦 شام: سالاد مرغ + سبزیجات
@@ -451,7 +449,7 @@ translations = {
             🍳 صبحانه: سفیده تخم مرغ + سبزیجات
             🥑 میان‌وعده: آووکادو
             🍗 ناهار: بوقلمون گریل شده + کدو
-             شام: ماهی سفید + سبزیجات بخارپز
+            🥬 شام: ماهی سفید + سبزیجات بخارپز
             ''',
         'plan_under_thyroid_disease': '''
             برنامه ۷ روزه:
@@ -470,13 +468,13 @@ translations = {
         'plan_over_thyroid_disease': '''
             برنامه ۷ روزه:
             🥗 صبحانه: اسموتی سبز + جو دوسر
-             میان‌وعده: هویج
+            🥕 میان‌وعده: هویج
             🍤 ناهار: میگو بخارپز + سبزیجات
-             شام: سوپ سبزیجات کم‌چرب
+            🥬 شام: سوپ سبزیجات کم‌چرب
             ''',
         'plan_obese_thyroid_disease': '''
             برنامه ۷ روزه:
-             صبحانه: سفیده تخم مرغ + سبزیجات
+            🍳 صبحانه: سفیده تخم مرغ + سبزیجات
             🥑 میان‌وعده: آووکادو
             🍗 ناهار: بوقلمون گریل شده + کدو
             🥬 شام: ماهی سفید + سبزیجات بخارپز
@@ -484,7 +482,7 @@ translations = {
         'extra_tips': '''
             نکات کلیدی برای همه وضعیت‌ها:
             ✅ خواب ۷-۹ ساعته
-            ✅ مصرف  لیوان آب روزانه
+            ✅ مصرف ۸ لیوان آب روزانه
             ❌ اجتناب از غذاهای فرآوری شده
             ''',
         'exercise_under_none': '''
@@ -534,7 +532,7 @@ translations = {
         ''',
         'exercise_normal_hypertension': '''
             🏋️ روتین ورزشی:
-            - ورزش‌های هوازی:  جلسه در هفته
+            - ورزش‌های هوازی: ۵ جلسه در هفته
             - تمرینات کششی: ۲ جلسه در هفته
         ''',
         'exercise_over_hypertension': '''
@@ -553,9 +551,9 @@ translations = {
             - تمرینات کششی: ۲ جلسه در هفته
         ''',
         'exercise_normal_heart_disease': '''
-            ️ روتین ورزشی:
+            🏋️ روتین ورزشی:
             - ورزش‌های هوازی سبک: ۴ جلسه در هفته
-            - یوگا:  جلسه در هفته
+            - یوگا: ۲ جلسه در هفته
         ''',
         'exercise_over_heart_disease': '''
             🏋️ روتین ورزشی:
@@ -603,19 +601,19 @@ translations = {
             - ورزش‌های آبی: ۲ جلسه در هفته
         ''',
         'exercise_obese_arthritis': '''
-            ️ روتین ورزشی:
+            🏋️ روتین ورزشی:
             - ورزش‌های کم‌فشار: ۵ جلسه در هفته
             - شنا: ۳ جلسه در هفته
         ''',
         'exercise_under_kidney_disease': '''
-            ️ روتین ورزشی:
-            - پیاده‌روی سبک: ۲ دقیقه روزانه
+            🏋️ روتین ورزشی:
+            - پیاده‌روی سبک: ۲۰ دقیقه روزانه
             - تمرینات کششی: ۲ جلسه در هفته
         ''',
         'exercise_normal_kidney_disease': '''
             🏋️ روتین ورزشی:
             - ورزش‌های هوازی سبک: ۴ جلسه در هفته
-            - یوگا:  جلسه در هفته
+            - یوگا: ۲ جلسه در هفته
         ''',
         'exercise_over_kidney_disease': '''
             🏋️ روتین ورزشی:
@@ -663,7 +661,7 @@ translations = {
         'plan_normal_depression': '''- صبحانه: نان سبوس‌دار + گردو\n- ناهار: ماهی سالمون + سبزیجات\n- شام: سوپ جو''',
         'exercise_normal_depression': '''- پیاده‌روی در طبیعت\n- مدیتیشن و یوگا''',
         'extra_tips_normal_depression': '''- ارتباط اجتماعی فعال\n- دوری از استرس''',
-        'supplements_normal_depression': '''- امگا \n- ویتامین D''',
+        'supplements_normal_depression': '''- امگا ۳\n- ویتامین D''',
         'warnings_normal_depression': '''- پرهیز از مصرف الکل\n- مشورت با روانپزشک''',
         'advice_normal_digestive_disorder': '''- مصرف فیبر بالا\n- پرهیز از غذاهای چرب و سرخ‌شده\n- وعده‌های غذایی کوچک و متعدد''',
         'plan_normal_digestive_disorder': '''- صبحانه: ماست کم‌چرب + میوه\n- ناهار: برنج قهوه‌ای + سبزیجات بخارپز\n- شام: سوپ سبزیجات''',
@@ -935,7 +933,7 @@ translations = {
             7-Day Plan:
             🥚 Breakfast: Egg whites + veggies
             🥜 Snack: Raw almonds
-             Lunch: Grilled chicken + green salad
+            🍗 Lunch: Grilled chicken + green salad
             🥬 Dinner: Steamed fish + broccoli
             ''',
         'plan_normal_diabetes': '''
@@ -956,20 +954,20 @@ translations = {
             7-Day Plan:
             🍳 Breakfast: Egg whites + spinach
             🥑 Snack: Avocado
-             Lunch: Steamed chicken + zucchini
-             Dinner: Fish + steamed veggies
+            🍗 Lunch: Steamed chicken + zucchini
+            🥬 Dinner: Fish + steamed veggies
             ''',
         'plan_under_hypertension': '''
             7-Day Plan:
-             Breakfast: Low-fat yogurt + fruit
-             Snack: Apple
+            🥗 Breakfast: Low-fat yogurt + fruit
+            🍎 Snack: Apple
             🍗 Lunch: Grilled chicken + veggies
             🥬 Dinner: White fish + green salad
             ''',
         'plan_normal_hypertension': '''
             7-Day Plan:
             🥚 Breakfast: Boiled egg + veggies
-             Snack: Raw almonds
+            🥜 Snack: Raw almonds
             🥩 Lunch: Lean beef + quinoa
             🥦 Dinner: Chicken salad + veggies
             ''',
@@ -982,8 +980,8 @@ translations = {
             ''',
         'plan_obese_hypertension': '''
             7-Day Plan:
-             Breakfast: Egg whites + veggies
-             Snack: Avocado
+            🍳 Breakfast: Egg whites + veggies
+            🥑 Snack: Avocado
             🍗 Lunch: Grilled turkey + zucchini
             🥬 Dinner: White fish + steamed veggies
             ''',
@@ -1012,20 +1010,20 @@ translations = {
             7-Day Plan:
             🍳 Breakfast: Egg whites + veggies
             🥑 Snack: Avocado
-             Lunch: Grilled turkey + zucchini
+            🍗 Lunch: Grilled turkey + zucchini
             🥬 Dinner: White fish + steamed veggies
             ''',
         'plan_under_asthma': '''
             7-Day Plan:
-             Breakfast: Low-fat yogurt + berries
-             Snack: Apple
+            🥗 Breakfast: Low-fat yogurt + berries
+            🍎 Snack: Apple
             🍗 Lunch: Grilled chicken + veggies
-             Dinner: White fish + green salad
+            🥬 Dinner: White fish + green salad
             ''',
         'plan_normal_asthma': '''
             7-Day Plan:
             🥚 Breakfast: Boiled egg + veggies
-             Snack: Raw almonds
+            🥜 Snack: Raw almonds
             🥩 Lunch: Lean beef + quinoa
             🥦 Dinner: Chicken salad + veggies
             ''',
@@ -1048,12 +1046,12 @@ translations = {
             🥗 Breakfast: Low-fat yogurt + berries
             🍎 Snack: Apple
             🍗 Lunch: Grilled chicken + veggies
-             Dinner: White fish + green salad
+            🥬 Dinner: White fish + green salad
             ''',
         'plan_normal_arthritis': '''
             7-Day Plan:
             🥚 Breakfast: Boiled egg + veggies
-             Snack: Raw almonds
+            🥜 Snack: Raw almonds
             🥩 Lunch: Lean beef + quinoa
             🥦 Dinner: Chicken salad + veggies
             ''',
@@ -1080,17 +1078,17 @@ translations = {
             ''',
         'plan_normal_kidney_disease': '''
             7-Day Plan:
-             Breakfast: Boiled egg + veggies
+            🥚 Breakfast: Boiled egg + veggies
             🥜 Snack: Raw almonds
-             Lunch: Lean beef + quinoa
-             Dinner: Chicken salad + veggies
+            🥩 Lunch: Lean beef + quinoa
+            🥦 Dinner: Chicken salad + veggies
             ''',
         'plan_over_kidney_disease': '''
             7-Day Plan:
-             Breakfast: Green smoothie + oats
-             Snack: Carrots
+            🥗 Breakfast: Green smoothie + oats
+            🥕 Snack: Carrots
             🍤 Lunch: Steamed shrimp + veggies
-             Dinner: Low-sodium veggie soup
+            🥬 Dinner: Low-sodium veggie soup
             ''',
         'plan_obese_kidney_disease': '''
             7-Day Plan:
@@ -1108,9 +1106,9 @@ translations = {
             ''',
         'plan_normal_thyroid_disease': '''
             7-Day Plan:
-             Breakfast: Boiled egg + veggies
+            🥚 Breakfast: Boiled egg + veggies
             🥜 Snack: Raw almonds
-             Lunch: Lean beef + quinoa
+            🥩 Lunch: Lean beef + quinoa
             🥦 Dinner: Chicken salad + veggies
             ''',
         'plan_over_thyroid_disease': '''
@@ -1194,17 +1192,17 @@ translations = {
             - Swimming: 2 sessions/week
         ''',
         'exercise_under_heart_disease': '''
-            ️ Exercise Routine:
+            🏋️ Exercise Routine:
             - Light walking: 20 mins daily
             - Stretching: 2 sessions/week
         ''',
         'exercise_normal_heart_disease': '''
-            ️ Exercise Routine:
+            🏋️ Exercise Routine:
             - Light cardio: 4 sessions/week
             - Yoga: 2 sessions/week
         ''',
         'exercise_over_heart_disease': '''
-            ️ Exercise Routine:
+            🏋️ Exercise Routine:
             - Brisk walking: 30 mins, 4x/week
             - Light resistance training: 2 sessions/week
         ''',
@@ -1259,7 +1257,7 @@ translations = {
             - Stretching: 2 sessions/week
         ''',
         'exercise_normal_kidney_disease': '''
-            ️ Exercise Routine:
+            🏋️ Exercise Routine:
             - Light cardio: 4 sessions/week
             - Yoga: 2 sessions/week
         ''',
@@ -1328,7 +1326,6 @@ translations = {
     }
 }
 
-# توابع کمکی
 def calculate_bmi(weight, height_cm):
     height_m = height_cm / 100
     return round(weight / (height_m ** 2), 1)
@@ -1446,13 +1443,19 @@ def download_pdf():
         ]
         
         for label, value in info_items:
+            if lang == 'fa':
+                label = reshape(label)
+                value = reshape(str(value))
             c.drawString(3*cm, y_position, f"{label}:")
-            c.drawString(10*cm, y_position, str(value))
+            c.drawString(10*cm, y_position, value)
             y_position -= 1.2*cm
         
         min_w, max_w = calculate_normal_weight_range(height_val)
+        range_text = f"{min_w} - {max_w} kg"
+        if lang == 'fa':
+            range_text = reshape(range_text)
         c.drawString(3*cm, y_position, "Normal Weight Range:")
-        c.drawString(10*cm, y_position, f"{min_w} - {max_w} kg")
+        c.drawString(10*cm, y_position, range_text)
         
         c.save()
         buffer.seek(0)
@@ -1465,7 +1468,7 @@ def download_pdf():
         )
     except Exception as e:
         return f"Error: {str(e)}", 500
-        
+
 @app.route('/download/image')
 def download_image():
     try:
@@ -1487,12 +1490,20 @@ def download_image():
         
         status_text = tr.get(status, status)
         
+        if lang == 'fa':
+            full_name = reshape(full_name)
+            status_text = reshape(status_text)
+            condition = reshape(condition)
+        
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.axis('off')
         
         fig.patch.set_facecolor('#F0F4F8')
         
         title = tr.get('title', 'BMI Report')
+        if lang == 'fa':
+            title = reshape(title)
+        
         ax.text(0.5, 0.9, title, transform=ax.transAxes,
                 fontsize=24, fontweight='bold', ha='center',
                 bbox=dict(boxstyle='round', facecolor='#ADB2D4', alpha=0.8))
