@@ -1506,8 +1506,6 @@ BMI: {bmi_val}
 Status: {status_text}
 Condition: {condition}
 """
-        """
-        
         ax.text(0.1, 0.7, info_text, transform=ax.transAxes,
                 fontsize=14, verticalalignment='top',
                 fontfamily='monospace')
