@@ -1323,6 +1323,149 @@ translations = {
         'warnings_normal_osteoporosis': '''- Avoid soda\n- Consult your doctor''',
         'supplements_default': 'Take appropriate supplements after consulting your doctor.',
         'warnings_default': 'If you have a medical condition, consult your doctor.'
+    },
+        'zh': {
+        'title': 'BMI计算器',
+        'submit': '继续',
+        'result_title': '结果',
+        'gender': '性别',
+        'age': '年龄',
+        'height': '身高',
+        'weight': '体重',
+        'condition': '基础疾病',
+        'bmi': '身体质量指数',
+        'status': '状态',
+        'status_under': '体重不足',
+        'status_normal': '正常',
+        'status_over': '超重',
+        'status_obese': '肥胖',
+        'condition_none': '无疾病',
+        'condition_diabetes': '糖尿病',
+        'condition_hypertension': '高血压',
+        'condition_heart_disease': '心脏病',
+        'condition_asthma': '哮喘',
+        'condition_arthritis': '关节炎',
+        'condition_kidney_disease': '肾病',
+        'condition_thyroid_disease': '甲状腺疾病',
+        'condition_cholesterol': '高胆固醇',
+        'condition_anemia': '贫血',
+        'condition_depression': '抑郁症',
+        'condition_digestive_disorder': '消化问题',
+        'condition_osteoporosis': '骨质疏松',
+        'bmi_chart_title': 'BMI状态图表',
+        'bmi_chart_label': '体重 (公斤)',
+        'bmi_chart_y_label': '身体质量指数 (BMI)',
+        'advice_under_none': '''
+            专业建议:
+            - 增加坚果和健康油脂的摄入
+            - 每周进行3次力量训练
+            - 在医生指导下服用维生素补充剂
+            ''',
+        'advice_normal_none': '''
+            专业建议:
+            - 遵循标准食物金字塔
+            - 结合有氧和力量训练
+            - 每月进行健康检查
+            ''',
+        'advice_over_none': '''
+            专业建议:
+            - 减少简单碳水化合物的摄入
+            - 增加日常活动量(至少10000步)
+            - 使用智能秤进行追踪
+            ''',
+        'advice_obese_none': '''
+            专业建议:
+            - 立即咨询专科医生
+            - 每日记录卡路里摄入
+            - 在专业教练指导下运动
+            ''',
+        'plan_under_none': '''
+            7天计划:
+            🥑 早餐:菠菜煎蛋+牛油果
+            🥜 零食:混合坚果
+            🍗 午餐:烤鸡+糙米
+            🥛 晚餐:扁豆汤+全麦面包
+            ''',
+        'plan_normal_none': '''
+            7天计划:
+            🥚 早餐:吐司+蔬菜煎蛋
+            🍎 零食:时令水果
+            🥩 午餐:牛排+煮土豆
+            🥦 晚餐:蛋白质沙拉+藜麦
+            ''',
+        'plan_over_none': '''
+            7天计划:
+            🥗 早餐:绿色冰沙+燕麦
+            🥕 零食:胡萝卜和鹰嘴豆泥
+            🍤 午餐:烤虾+蒸蔬菜
+             晚餐:鸡肉大麦汤
+            ''',
+        'plan_obese_none': '''
+            7天计划:
+            🍳 早餐:蛋白+蘑菇
+            🥑 零食:牛油果配核桃
+            🥩 午餐:火鸡胸+西葫芦面
+             晚餐:白鱼+蒸西兰花
+            ''',
+        'extra_tips': '''
+            通用提示:
+            ✅ 睡眠7-9小时
+            ✅ 每天喝8杯水
+            ❌ 避免加工食品
+            ''',
+        'exercise_under_none': '''
+            ️ 运动计划:
+            - 力量训练:3组×15次(轻哑铃)
+            - 每日步行:30分钟
+            ''',
+        'exercise_normal_none': '''
+            🏋️ 运动计划:
+            - 交叉训练:每周4次
+            - 游泳:每周2次
+            ''',
+        'exercise_over_none': '''
+            🏋️ 运动计划:
+            - 慢跑:每周3次,每次45分钟
+            - 瑜伽:每周2次
+            ''',
+        'exercise_obese_none': '''
+            ️ 运动计划:
+            - 高强度间歇训练:每周5次
+            - 在教练指导下进行重量训练
+            ''',
+        'supplements_default': '在医生指导下服用适当的补充剂。',
+        'warnings_default': '如果您有基础疾病,请咨询医生。',
+        # بیماری‌های جدید
+        'advice_normal_cholesterol': '''- 减少饱和脂肪摄入\n- 使用橄榄油和鱼类\n- 每日步行''',
+        'plan_normal_cholesterol': '''- 早餐:燕麦+核桃\n- 午餐:烤鱼+蔬菜\n- 晚餐:大麦汤+绿色沙拉''',
+        'exercise_normal_cholesterol': '''- 快走:每天30分钟\n- 骑自行车:每周2次''',
+        'extra_tips_normal_cholesterol': '''- 避免油炸食品\n- 高纤维饮食''',
+        'supplements_normal_cholesterol': '''- 欧米伽3\n- 可溶性纤维''',
+        'warnings_normal_cholesterol': '''- 避免过多鸡蛋和红肉\n- 定期检查胆固醇''',
+        'advice_normal_anemia': '''- 食用富含铁的食物(红肉、扁豆)\n- 随餐服用维生素C\n- 饭后避免喝茶''',
+        'plan_normal_anemia': '''- 早餐:鸡蛋+橙汁\n- 午餐:扁豆炖肉\n- 晚餐:菠菜汤''',
+        'exercise_normal_anemia': '''- 轻度步行\n- 瑜伽''',
+        'extra_tips_normal_anemia': '''- 定期验血\n- 必要时服用铁补充剂''',
+        'supplements_normal_anemia': '''- 铁\n- 维生素C''',
+        'warnings_normal_anemia': '''- 避免铁与乳制品同食\n- 咨询医生''',
+        'advice_normal_depression': '''- 欧米伽3脂肪酸\n- 规律运动\n- 充足睡眠''',
+        'plan_normal_depression': '''- 早餐:全麦面包+核桃\n- 午餐:三文鱼+蔬菜\n- 晚餐:大麦汤''',
+        'exercise_normal_depression': '''- 自然散步\n- 冥想和瑜伽''',
+        'extra_tips_normal_depression': '''- 保持社交活跃\n- 避免压力''',
+        'supplements_normal_depression': '''- 欧米伽3\n- 维生素D''',
+        'warnings_normal_depression': '''- 避免饮酒\n- 咨询精神科医生''',
+        'advice_normal_digestive_disorder': '''- 高纤维饮食\n- 避免油腻和油炸食品\n- 少食多餐''',
+        'plan_normal_digestive_disorder': '''- 早餐:低脂酸奶+水果\n- 午餐:糙米+蒸蔬菜\n- 晚餐:蔬菜汤''',
+        'exercise_normal_digestive_disorder': '''- 饭后轻度散步\n- 拉伸运动''',
+        'extra_tips_normal_digestive_disorder': '''- 喝足够的水\n- 避免暴饮暴食''',
+        'supplements_normal_digestive_disorder': '''- 益生菌\n- 纤维''',
+        'warnings_normal_digestive_disorder': '''- 避免苏打水和快餐\n- 咨询胃肠科医生''',
+        'advice_normal_osteoporosis': '''- 低脂乳制品\n- 补充维生素D和钙\n- 负重运动''',
+        'plan_normal_osteoporosis': '''- 早餐:低脂牛奶+全麦面包\n- 午餐:鸡肉+西兰花\n- 晚餐:牛奶汤''',
+        'exercise_normal_osteoporosis': '''- 快走\n- 力量训练''',
+        'extra_tips_normal_osteoporosis': '''- 晒太阳\n- 避免吸烟''',
+        'supplements_normal_osteoporosis': '''- 钙\n- 维生素D''',
+        'warnings_normal_osteoporosis': '''- 避免苏打水\n- 咨询医生'''
     }
 }
 
